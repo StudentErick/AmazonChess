@@ -1,4 +1,6 @@
-#pragma once
+#ifndef EVALUATEENGINE_H
+#define EVALUATEENGINE_H
+
 class CEvaluateEngine
 {
 public:
@@ -25,7 +27,7 @@ private:   //以下所有参数的意义，请全部参照英文原版论文
 	double t;
 	double m; 
 	double K;           //浮动参数，用于
-	double value;   //最终评估值
+    double value;       //最终评估值
 
 	void calculate_kingMove();
 	void calculate_queenMove();
@@ -37,6 +39,8 @@ private:   //以下所有参数的意义，请全部参照英文原版论文
 	void calculate_m();
     void calculate_s();
 
-	int offset[8][2];  //偏移方向
+//	int offset[8][2];  //偏移方向
 };
+
+#endif
 

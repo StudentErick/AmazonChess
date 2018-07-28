@@ -1,15 +1,15 @@
 #include "EvaluateEngine.h"
-#include "datatype.h"
+#include "utils.h"
 #include <queue>
 #include <cmath>
 #include <cstring>
-
-
+using namespace DataStructure;
 CEvaluateEngine::CEvaluateEngine()
 {
     //需要改进的参数
     K = 0.11;/////////////////////////////////////////////////////////////////////
     //定义8个偏移方向
+    /*
     offset[0][0] = -1; offset[0][1] = -1;
     offset[1][0] = -1; offset[1][1] = 0;
     offset[2][0] = -1; offset[2][1] = 1;
@@ -18,6 +18,7 @@ CEvaluateEngine::CEvaluateEngine()
     offset[5][0] = 1; offset[5][1] = -1;
     offset[6][0] = 1; offset[6][1] = 0;
     offset[7][0] = 1; offset[7][1] = 1;
+    */
 }
 
 

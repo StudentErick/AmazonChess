@@ -6,10 +6,12 @@ CONFIG -= qt
 SOURCES += main.cpp \
     EvaluateEngine.cpp \
     MoveGenerator.cpp \
-    SearchEngine.cpp
+    SearchEngine.cpp \
+    HashTable.cpp
 
 HEADERS += \
     EvaluateEngine.h \
     utils.h \
     MoveGenerator.h \
-    SearchEngine.h
+    SearchEngine.h \
+    HashTable.h

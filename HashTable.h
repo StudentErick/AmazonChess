@@ -5,7 +5,7 @@
 
 class HashTable {
  public:
-  HashTable(int TableSize);
+  HashTable(int TableSize = 1024);
   ~HashTable();
   // 计算当前状态的棋盘哈希值
   void CalculateInitHashKey(int Board[10][10]);

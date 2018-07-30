@@ -30,14 +30,14 @@ struct Pos {
 };
 // 步法信息
 struct ChessMove {
-  Pos From;        // 起点坐标
-  Pos To;          // 终点坐标
-  Pos Bar;         // 障碍坐标
-  int score;       // 历史得分
-  int eval_score;  // 评估分数
+  Pos From;           // 起点坐标
+  Pos To;             // 终点坐标
+  Pos Bar;            // 障碍坐标
+  double eval_score;  // 评估分数
+  int his_score;      // 历史启发得分
   int chessID;
   ChessMove() {
-    score = 0;
+    his_score = 0;
     chessID = BLACK;  // 默认黑方走
   }
 };

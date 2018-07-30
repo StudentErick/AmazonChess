@@ -38,6 +38,7 @@ struct ChessMove {
   int chessID;
   ChessMove() {
     his_score = 0;
+    eval_score = -D_INF;
     chessID = BLACK;  // 默认黑方走
   }
 };

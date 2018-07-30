@@ -8,7 +8,8 @@ SOURCES += main.cpp \
     MoveGenerator.cpp \
     SearchEngine.cpp \
     HashTable.cpp \
-    HistoryHeuristic.cpp
+    HistoryHeuristic.cpp \
+    NegaScout.cpp
 
 HEADERS += \
     EvaluateEngine.h \
@@ -16,4 +17,5 @@ HEADERS += \
     MoveGenerator.h \
     SearchEngine.h \
     HashTable.h \
-    HistoryHeuristic.h
+    HistoryHeuristic.h \
+    NegaScout.h

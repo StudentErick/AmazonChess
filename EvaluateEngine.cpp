@@ -4,7 +4,7 @@
 #include <queue>
 #include "utils.h"
 // using namespace DataStructure;
-CEvaluateEngine::CEvaluateEngine() {
+EvaluateEngine::EvaluateEngine() {
   //需要改进的参数
   K = 0.11;  /////////////////////////////////////////////////////////////////////
              //定义8个偏移方向
@@ -20,9 +20,9 @@ offset[7][0] = 1; offset[7][1] = 1;
 */
 }
 
-CEvaluateEngine::~CEvaluateEngine() {}
+EvaluateEngine::~EvaluateEngine() {}
 
-void CEvaluateEngine::calculate_kingMove() {
+void EvaluateEngine::calculate_kingMove() {
   struct P {
     int x, y;  // x y坐标
     int dis;   //距离
@@ -114,7 +114,7 @@ void CEvaluateEngine::calculate_kingMove() {
   }
 }
 
-void CEvaluateEngine::calculate_queenMove() {
+void EvaluateEngine::calculate_queenMove() {
   struct P {
     int x, y;  // x y坐标
     int dis;   //距离
@@ -202,7 +202,7 @@ void CEvaluateEngine::calculate_queenMove() {
   }
 }
 
-void CEvaluateEngine::calculate_t1() {
+void EvaluateEngine::calculate_t1() {
   t1 = 0;
   double q1 = 0, q2 = 0;
   for (int i = 0; i < 10; i++) {
@@ -225,7 +225,7 @@ void CEvaluateEngine::calculate_t1() {
   }
 }
 
-void CEvaluateEngine::calculate_t2() {
+void EvaluateEngine::calculate_t2() {
   double q1, q2;
   t2 = 0;
   for (int i = 0; i < 10; i++) {
@@ -247,7 +247,7 @@ void CEvaluateEngine::calculate_t2() {
   }
 }
 
-void CEvaluateEngine::calculate_c1() {
+void EvaluateEngine::calculate_c1() {
   c1 = 0;
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
@@ -261,7 +261,7 @@ void CEvaluateEngine::calculate_c1() {
   c1 /= 2;
 }
 
-void CEvaluateEngine::calculate_c2() {
+void EvaluateEngine::calculate_c2() {
   c2 = 0;
   double q1, q2;
   for (int i = 0; i < 10; i++) {
@@ -277,7 +277,7 @@ void CEvaluateEngine::calculate_c2() {
   }
 }
 
-void CEvaluateEngine::calculate_w() {
+void EvaluateEngine::calculate_w() {
   w = 0;
   double q1, q2;
   for (int i = 0; i < 10; i++) {
@@ -289,7 +289,7 @@ void CEvaluateEngine::calculate_w() {
   }
 }
 
-void CEvaluateEngine::calculate_m() {
+void EvaluateEngine::calculate_m() {
   m = 0;
   memcpy(mobility, Board, sizeof(Board));
   //计算空格的灵活度
@@ -341,7 +341,7 @@ void CEvaluateEngine::calculate_m() {
   m = m_black - m_white;
 }
 
-void CEvaluateEngine::calculate_s() {
+void EvaluateEngine::calculate_s() {
   int N1, N2, M1 = 0, M2 = 0, i, j;
   N1 = N2 = 0;
   for (i = 1; i <= 10; i++) {
@@ -373,7 +373,7 @@ void CEvaluateEngine::calculate_s() {
   s = s1 / 1000 + s2 / 10000;
 }
 
-double CEvaluateEngine::evaluate(int positioin[10][10]) {
+double EvaluateEngine::evaluate(int positioin[10][10]) {
   memcpy(Board, positioin, 100 * sizeof(int));
   calculate_kingMove();
   calculate_queenMove();

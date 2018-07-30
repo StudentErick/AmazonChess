@@ -16,7 +16,7 @@ class HashTable {
   //查询评估值
   double LookUpHashTable(double alpha, double beta, double depth);
   // 当前结点数据存入哈希表
-  void EnterHashTalbe(entry_type EType, double value, short depth);
+  void EnterHashTalbe(entry_type EType, double value, int depth);
   // 初始化哈希表
   void InitializeHashKey();
 

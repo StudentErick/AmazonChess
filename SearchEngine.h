@@ -15,8 +15,8 @@ class SearchEngine {
  protected:
   void MakeMove(const ChessMove &move);
   void UnMakeMove(const ChessMove &move);
-  // 游戏结束，黑方胜返回D_INF，白方胜返回-D_INF，没结束返回0
-  double IsGameOver(int Board[10][10]);
+  // 游戏结束，黑方胜返回BLACK，白方胜返回WHITE，没结束返回0
+  int IsGameOver(int Board[10][10]);
 
   ChessMove m_BestMove;               // 最佳走法
   MoveGenerator *m_pMoveGenerator;    // 步法生成

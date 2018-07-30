@@ -25,7 +25,7 @@ void SearchEngine::UnMakeMove(const ChessMove &move) {
   m_Board[move.Bar.x][move.Bar.y] = EMPTY;
 }
 
-double SearchEngine::IsGameOver(int Board[10][10]) {
+int SearchEngine::IsGameOver(int Board[10][10]) {
   int nBlack = 0, nWhite = 0;  // 被堵死的棋子的数量
   for (int i = 0; i < 10; ++i) {
     for (int j = 0; j < 10; ++j) {
@@ -51,10 +51,10 @@ double SearchEngine::IsGameOver(int Board[10][10]) {
     }
   }
   if (nBlack >= 4) {
-    return D_INF;
+    return BLACK;
   } else if (nWhite >= 4) {
-    return -D_INF;
+    return WHITE;
   } else {
-    return 0.0;
+    return 0;
   }
 }

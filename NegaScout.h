@@ -23,11 +23,11 @@ class NegaScout : public SearchEngine {
 
   HashTable* m_pHashTable;                // 哈希表
   HistoryHeuristic* m_pHistoryHeuristic;  // 历史启发
-  int m_timeLimt;                         // 时间限制
+  int m_timeLimt;                         // 时间限制，以秒为单位
   time_t m_beginTime;                     // 开始时间
   time_t m_curTime;                       // 当前时间
   bool m_ContinueSearch;                  // 是否继续搜索
-  // 自定义比较函数，用于构造堆
+  // 自定义比较函数，用于构造大顶堆
   struct cmp {
     bool operator()(ChessMove& m1, ChessMove& m2) {
       return m1.eval_score < m2.eval_score;

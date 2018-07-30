@@ -105,7 +105,7 @@ double HashTable::LookUpHashTable(double alpha, double beta, double depth) {
   return NOT_HIT_TARGET;
 }
 
-void HashTable::EnterHashTalbe(entry_type EntryType, double eval, short depth) {
+void HashTable::EnterHashTalbe(entry_type EntryType, double eval, int depth) {
   auto x = m_HashKey32 %
            static_cast<unsigned long long>(m_nTableSize * m_nTableSize);
   HashItem *pht = &m_pHashTable[x];

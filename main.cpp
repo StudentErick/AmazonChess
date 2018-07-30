@@ -1,9 +1,6 @@
-#include <unistd.h>
-#include <ctime>
 #include <iostream>
-#include <typeinfo>
+#include "NegaScout.h"
 #include "utils.h"
-
 using namespace std;
 
 /*
@@ -33,16 +30,24 @@ void showBoard(int Board[10][10]) {
   }
 }
 
-// static int Board[10][10];
+void initBoard(int Board[10][10]) {
+  Board[0][3] = WHITE;
+  Board[0][6] = WHITE;
+  Board[3][0] = WHITE;
+  Board[3][9] = WHITE;
+  Board[6][0] = BLACK;
+  Board[6][9] = BLACK;
+  Board[9][3] = BLACK;
+  Board[9][6] = BLACK;
+}
+
+static int Board[10][10];
 
 int main() {
-  time_t a;
-  time(&a);
-  // sleep(1);
-  time_t b;
-  time(&b);
-  cout << typeid(b - a).name() << endl;
-  long c = 0;
-  cout << typeid(c).name() << endl;
+  initBoard(Board);
+  showBoard(Board);
+  NegaScout AI;
+  AI.SearchAGoodMove(Board);
+  showBoard(Board);
   return 0;
 }

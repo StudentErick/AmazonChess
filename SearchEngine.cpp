@@ -2,6 +2,17 @@
 
 SearchEngine::SearchEngine() {}
 
+SearchEngine::~SearchEngine() {
+  if (m_pEvaluateEngine != nullptr) {
+    delete m_pEvaluateEngine;
+    m_pEvaluateEngine = nullptr;
+  }
+  if (m_pMoveGenerator != nullptr) {
+    delete m_pEvaluateEngine;
+    m_pEvaluateEngine = nullptr;
+  }
+}
+
 void SearchEngine::MakeMove(const ChessMove &move) {
   m_Board[move.From.x][move.From.y] = EMPTY;
   m_Board[move.To.x][move.To.y] = move.chessID;
@@ -28,6 +39,7 @@ double SearchEngine::IsGameOver(int Board[10][10]) {
             ++n;
           }
         }
+        // 8个方向都被堵死，判别棋子的种类
         if (n >= 8) {
           if (Board[i][j] == BLACK) {
             ++nBlack;

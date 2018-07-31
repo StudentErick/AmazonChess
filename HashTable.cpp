@@ -22,7 +22,7 @@ HashTable::HashTable(int TableSize) {
 }
 
 HashTable::~HashTable() {
-  delete[] m_pHashTable;
+  delete m_pHashTable;
   m_pHashTable = nullptr;
 }
 

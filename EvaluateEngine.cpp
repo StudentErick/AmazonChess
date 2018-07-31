@@ -6,18 +6,7 @@
 // using namespace DataStructure;
 EvaluateEngine::EvaluateEngine() {
   //需要改进的参数
-  K = 0.11;  /////////////////////////////////////////////////////////////////////
-             //定义8个偏移方向
-  /*
-offset[0][0] = -1; offset[0][1] = -1;
-offset[1][0] = -1; offset[1][1] = 0;
-offset[2][0] = -1; offset[2][1] = 1;
-offset[3][0] = 0; offset[3][1] = -1;
-offset[4][0] = 0; offset[4][1] = 1;
-offset[5][0] = 1; offset[5][1] = -1;
-offset[6][0] = 1; offset[6][1] = 0;
-offset[7][0] = 1; offset[7][1] = 1;
-*/
+  K = 0.11;
 }
 
 EvaluateEngine::~EvaluateEngine() {}

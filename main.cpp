@@ -46,7 +46,7 @@ static int Board[10][10];
 int main() {
   initBoard(Board);
   showBoard(Board);
-  NegaScout AI;
+  NegaScout AI(2);
   AI.SearchAGoodMove(Board);
   showBoard(Board);
   return 0;

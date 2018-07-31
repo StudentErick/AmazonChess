@@ -13,14 +13,14 @@ const double eps = 0.00000001;
 
 // 8个偏移方向
 const int offset[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
-                          {0, 0},   {1, -1}, {1, 0},  {1, 1}};
+                          {0, 1},   {1, -1}, {1, 0},  {1, 1}};
 
 // 精确，下边界，上边界
 enum entry_type { exact, lower_bound, upper_bound };
 
 struct HashItem {
   unsigned long long checksum;  // 64位校验码
-  short depth;                  // 取得该值时的搜索深度
+  int depth;                    // 取得该值时的搜索深度
   double eval;                  // 结点的值
   entry_type EntryType;
 };

@@ -42,50 +42,54 @@ void NegaScout::RootSearch() {
   // 生成所有的步法
   m_pMoveGenerator->CreatePossibleMove(m_Board, BLACK, MoveList);
   // 评估结点的分数
-  for (auto p : MoveList) {
+  for (auto &p : MoveList) {  // 注意使用引用符号&，auto不能转换成引用
     MakeMove(p);
     p.eval_score = m_pEvaluateEngine->evaluate(m_Board);
     UnMakeMove(p);
   }
-  // 先进行一次评估，然后根据第一步最佳值把最佳步法进行堆化，防止全部搜索超时
-  std::priority_queue<ChessMove, std::vector<ChessMove>, cmp> MoveQueue(
-      MoveList.begin(), MoveList.end());
 
+  // 先排序，然后搜索，假设第一次评估的分数可以决定后续的
+  std::sort(MoveList.begin(), MoveList.end(),
+            [](const ChessMove &m1, const ChessMove &m2) {
+              return m1.eval_score > m2.eval_score;
+            });
   time(&m_beginTime);  // 获取搜索启动时间
-
-  // 队列不空而且没有超时的情况
-  while (!MoveQueue.empty() && m_ContinueSearch) {
-    auto move = MoveQueue.top();
-    MoveQueue.pop();
-    MakeMove(move);
-    move.eval_score = NegaScoutSearch(m_SearchDepth, -D_INF, D_INF);
-    UnMakeMove(move);
-    MoveQueue.push(move);
-    time(&m_curTime);  // 获取当前系统时间
-    // 超时处理
-    if (m_curTime - m_beginTime > m_timeLimt) {
-      m_ContinueSearch = false;
+  for (auto &p : MoveList) {
+    time(&m_curTime);                            // 获取当前系统时间
+    if (m_curTime - m_beginTime > m_timeLimt) {  // 超时退出
+      break;
+    }
+    p.eval_score = NegaScoutSearch(m_SearchDepth, -D_INF, D_INF);
+  }
+  // 选择分值最高的走法
+  m_BestMove = *MoveList.begin();
+  for (auto &p : MoveList) {
+    if (m_BestMove.eval_score < p.eval_score) {
+      m_BestMove = p;
     }
   }
-  m_BestMove = MoveQueue.top();  // 获取最佳走法
 }
 
 double NegaScout::NegaScoutSearch(int depth, double alpha, double beta) {
-  int flag = IsGameOver(m_Board);
-  if (flag == BLACK) {
-    return D_INF;
-  } else if (flag == WHITE) {
-    return -D_INF;
+  double score = IsGameOver(depth);
+  if (fabs(score - 0.0) > eps) {
+    return score;
   }
-  double score = m_pHashTable->LookUpHashTable(alpha, beta, depth);
+  score = m_pHashTable->LookUpHashTable(alpha, beta, depth);
   // 浮点数不能直接比较大小，而是使用误差方式判断相等比较安全
-  if (fabs(score - NOT_HIT_TARGET) < eps) {
+  if (fabs(score - NOT_HIT_TARGET) > eps) {
     return score;
   }
   if (depth <= 0) {
     score = m_pEvaluateEngine->evaluate(m_Board);
-    m_pHashTable->EnterHashTalbe(exact, score, depth);  // 数据存入哈希表
-    return score;
+    // 数据存入哈希表
+    m_pHashTable->EnterHashTalbe(exact, score, depth);
+    // 负极大搜索对走棋方敏感，必须判断行棋方
+    if ((m_SearchDepth - depth) % 2 == 0) {
+      return score;
+    } else {
+      return -score;
+    }
   }
   std::vector<ChessMove> MList;
   int side = 0;  // 走棋方
@@ -96,7 +100,7 @@ double NegaScout::NegaScoutSearch(int depth, double alpha, double beta) {
   }
   m_pMoveGenerator->CreatePossibleMove(m_Board, side, MList);
   // 获取历史得分
-  for (auto p : MList) {
+  for (auto &p : MList) {
     p.his_score = m_pHistoryHeuristic->GetHistoryScore(p);
   }
   // 按照历史得分排序
@@ -107,39 +111,43 @@ double NegaScout::NegaScoutSearch(int depth, double alpha, double beta) {
   int cur = 0;  // 当前迭代器的位置
   int eval_is_exact = 0;
   ChessMove bestMove;  // 最佳走法
-  for (auto p : MList) {
-    if (!m_ContinueSearch) {  // 超时
-      break;
-    }
+  bool best = false;   // 是否有最佳走法
+  double a = alpha, b = beta, t = 0.0;
+  for (auto &p : MList) {
     m_pHashTable->Hash_MakeMove(p);  // 生成子节点的哈希值
-    MakeMove(p);
+    MakeMove(p);                     // 模拟走子
     // 递归搜索，第一个是全窗口，其他空窗探测
-    score = -NegaScoutSearch(depth - 1, -beta, -alpha);
-    if (score > alpha && score < beta && cur > 0) {
-      alpha = -NegaScoutSearch(depth - 1, -beta, -score);  // 重新搜索
+    t = -NegaScoutSearch(depth - 1, -b, -a);
+    if (t > a && t < b && cur > 0) {
+      a = -NegaScoutSearch(depth - 1, -beta, -t);  // 重新搜索
       eval_is_exact = 1;
       bestMove = p;  // 记录最佳走法
+      best = true;
     }
-    m_pHashTable->Hash_UnMakeMove(p);
-    if (alpha < score) {  // 首次搜索命中
+    m_pHashTable->Hash_UnMakeMove(p);  // 恢复结点哈希值
+    UnMakeMove(p);                     // 清空本次模拟
+    if (a < t) {                       // 首次搜索命中
       eval_is_exact = 1;
-      alpha = score;
+      a = t;
     }
-    if (alpha >= beta) {
+    if (a >= beta) {
       m_pHashTable->EnterHashTalbe(lower_bound, alpha, depth);
       m_pHistoryHeuristic->EnterHistoryScore(p, depth);
-      return alpha;  // beta剪枝
+      return a;  // beta剪枝
     }
-    beta = alpha + 0.01;  // 设定新的空窗
+    b = a + 0.0001;  // 设定新的空窗
     ++cur;
   }
+
   // 最佳走法加入历史记录
-  m_pHistoryHeuristic->EnterHistoryScore(bestMove, depth);
+  if (best) {
+    m_pHistoryHeuristic->EnterHistoryScore(bestMove, depth);
+  }
   // 搜索结果加入置换表
   if (eval_is_exact) {
     m_pHashTable->EnterHashTalbe(exact, alpha, depth);
   } else {
     m_pHashTable->EnterHashTalbe(upper_bound, alpha, depth);
   }
-  return alpha;
+  return a;
 }

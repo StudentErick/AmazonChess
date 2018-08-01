@@ -5,7 +5,7 @@ class EvaluateEngine {
  public:
   EvaluateEngine();
   virtual ~EvaluateEngine();
-  double evaluate(int Board[10][10]);
+  double evaluate(int posiotion[10][10]);
   double getMobility() const { return m; }
 
  private:  //以下所有参数的意义，请全部参照英文原版论文

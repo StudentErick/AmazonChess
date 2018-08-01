@@ -39,6 +39,12 @@ void initBoard(int Board[10][10]) {
   Board[6][9] = BLACK;
   Board[9][3] = BLACK;
   Board[9][6] = BLACK;
+  for (int j = 0; j < 10; ++j) {
+    Board[4][j] = BARRIER;
+  }
+  for (int i = 0; i < 10; ++i) {
+    Board[i][5] = BARRIER;
+  }
 }
 
 static int Board[10][10];
@@ -46,7 +52,7 @@ static int Board[10][10];
 int main() {
   initBoard(Board);
   showBoard(Board);
-  NegaScout AI(2);
+  NegaScout AI(2, 600);
   AI.SearchAGoodMove(Board);
   showBoard(Board);
   return 0;

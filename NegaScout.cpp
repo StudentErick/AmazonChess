@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <iostream>
 #include <queue>
 #include <vector>
 
@@ -54,20 +55,29 @@ void NegaScout::RootSearch() {
               return m1.eval_score > m2.eval_score;
             });
   time(&m_beginTime);  // 获取搜索启动时间
+  int n = 0;  // 用于计数的，因为如果后面的搜索不到，就没有太大的意义了
   for (auto &p : MoveList) {
     time(&m_curTime);                            // 获取当前系统时间
     if (m_curTime - m_beginTime > m_timeLimt) {  // 超时退出
+      m_ContinueSearch = false;
       break;
     }
+    MakeMove(p);
     p.eval_score = NegaScoutSearch(m_SearchDepth, -D_INF, D_INF);
+    UnMakeMove(p);
+    ++n;
   }
+  int k = n;
   // 选择分值最高的走法
   m_BestMove = *MoveList.begin();
   for (auto &p : MoveList) {
     if (m_BestMove.eval_score < p.eval_score) {
       m_BestMove = p;
     }
+    if (n < 0) break;
+    --n;
   }
+  std::cout << "搜索根节点的数量：" << k << std::endl;
 }
 
 double NegaScout::NegaScoutSearch(int depth, double alpha, double beta) {
@@ -80,7 +90,13 @@ double NegaScout::NegaScoutSearch(int depth, double alpha, double beta) {
   if (fabs(score - NOT_HIT_TARGET) > eps) {
     return score;
   }
-  if (depth <= 0) {
+  // 获取系统时间
+  time(&m_curTime);
+  if (m_curTime - m_beginTime > m_timeLimt) {  // 超时退出
+    m_ContinueSearch = false;
+  }
+  // 深度为0或者超时了
+  if (depth <= 0 || !m_ContinueSearch) {
     score = m_pEvaluateEngine->evaluate(m_Board);
     // 数据存入哈希表
     m_pHashTable->EnterHashTalbe(exact, score, depth);

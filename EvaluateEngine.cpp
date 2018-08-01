@@ -362,8 +362,8 @@ void EvaluateEngine::calculate_s() {
   s = s1 / 1000 + s2 / 10000;
 }
 
-double EvaluateEngine::evaluate(int positioin[10][10]) {
-  memcpy(Board, positioin, 100 * sizeof(int));
+double EvaluateEngine::evaluate(int position[10][10]) {
+  memcpy(Board, position, sizeof(Board));
   calculate_kingMove();
   calculate_queenMove();
   calculate_w();

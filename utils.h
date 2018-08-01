@@ -35,10 +35,17 @@ struct ChessMove {
   Pos Bar;            // 障碍坐标
   double eval_score;  // 评估分数
   int his_score;      // 历史启发得分
-  int chessID;
+  int chessID;        // 棋子的颜色
+  double win_prob;    // 蒙特卡洛的胜率
+  double Qsa;         // 论文中的Q(s,a)
+  int Nsa;            // 论文中的N(s,a)
+  int Ns;             // 论文中的Ns
   ChessMove() {
     his_score = 0;
+    win_prob = 0.0;
     eval_score = -D_INF;
+    Qsa = 0.0;
+    Nsa = 0.0;
     chessID = BLACK;  // 默认黑方走
   }
 };

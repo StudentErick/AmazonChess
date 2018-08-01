@@ -1,6 +1,9 @@
 #include "SearchEngine.h"
 
-SearchEngine::SearchEngine() {}
+SearchEngine::SearchEngine() {
+  m_pEvaluateEngine = nullptr;
+  m_pMoveGenerator = nullptr;
+}
 
 SearchEngine::~SearchEngine() {
   if (m_pEvaluateEngine != nullptr) {
@@ -20,9 +23,9 @@ void SearchEngine::MakeMove(const ChessMove &move) {
 }
 
 void SearchEngine::UnMakeMove(const ChessMove &move) {
-  m_Board[move.From.x][move.From.y] = move.chessID;
-  m_Board[move.To.x][move.To.y] = EMPTY;
   m_Board[move.Bar.x][move.Bar.y] = EMPTY;
+  m_Board[move.To.x][move.To.y] = EMPTY;
+  m_Board[move.From.x][move.From.y] = move.chessID;
 }
 
 double SearchEngine::IsGameOver(int depth) {

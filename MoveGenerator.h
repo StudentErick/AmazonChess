@@ -17,7 +17,7 @@ class MoveGenerator {
   void CreatePossibleBar(int lx, int ly, int x, int y, int side,
                          std::vector<ChessMove> &MoveList);
   // 复制棋盘
-  int m_Board[10][10];
+  int m_Position[10][10];
   // 步法总数
   int m_Count;
 };

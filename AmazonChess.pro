@@ -9,8 +9,7 @@ SOURCES += main.cpp \
     SearchEngine.cpp \
     HashTable.cpp \
     HistoryHeuristic.cpp \
-    NegaScout.cpp \
-    Uct.cpp
+    NegaScout.cpp
 
 HEADERS += \
     EvaluateEngine.h \
@@ -19,5 +18,4 @@ HEADERS += \
     SearchEngine.h \
     HashTable.h \
     HistoryHeuristic.h \
-    NegaScout.h \
-    Uct.h
+    NegaScout.h
